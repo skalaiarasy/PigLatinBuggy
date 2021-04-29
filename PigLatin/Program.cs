@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PigLatin
@@ -7,83 +8,60 @@ namespace PigLatin
     {
         static void Main(string[] args)
         {
-            string userInput = GetInput("Please input a word or sentence to translate to pig Latin");
+            bool runProgram = true;
+            while (runProgram)
+            {
+                string userInput = GetInput("Please input a word or sentence to translate to pig Latin");
+                string[] wordInput = userInput.Split(" ");
+                List<string> convertedLine = new List<string>();//making a list to store the translated words
 
-            string translation = ToPigLatin(userInput);
-            Console.WriteLine(translation);
+                for (int i = 0; i < wordInput.Length; i++)
+                {
+                    Convert convert = new Convert(wordInput[i]);
+                    string translation = convert.ToPigLatin(wordInput[i]);
+                    convertedLine.Add(translation);
+
+
+                }
+                for (int i = 0; i < convertedLine.Count; i++)//to print the list
+                {
+                    Console.Write($"{ convertedLine[i]  }  ");
+
+                }
+
+                while (true)
+                {
+                    Console.WriteLine("\nDo you want to continue?y/n");
+                    string choice = Console.ReadLine().Trim().ToLower();
+                    if (choice == "y")
+                    {
+                        break;
+                    }
+                    else if (choice == "n")
+                    {
+                        runProgram = false;
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("wrong input. Please try again");
+                    }
+                }
+            }
+            
+
         }
-
+        //method to get input
         public static string GetInput(string prompt)
         {
             Console.WriteLine(prompt);
             string input = Console.ReadLine().ToLower().Trim();
             return input;
-        }
+        }  
 
-        public static bool IsVowel(char c)
-        {
-            char[] vowels = { 'a', 'e', 'i', 'o', 'u' };
+        
+
             
-            return c.ToString() == vowels.ToString();
-        }
-
-        public static string ToPigLatin(string word)
-        {
-            char[] specialChars = { '@', '.', '-', '$', '^', '&' };
-            word = word.ToLower();
-            foreach(char c in specialChars)
-            {
-                foreach(char w in word)
-                {
-                    if (w == c)
-                    {
-                        Console.WriteLine("That word has special characters, we will return it as is");
-                        return word;
-                    }
-                }
-                
-            }
-
-            bool noVowels = true;
-            foreach(char letter in word)
-            {
-                if (IsVowel(letter))
-                {
-                    noVowels = false;
-                }
-            }
-
-            if (noVowels)
-            {
-                return word; 
-            }
-
-            char firstLetter = word[0];
-            string output = "placeholder";
-            if (IsVowel(firstLetter) == true)
-            {
-                output = word + "ay";
-            }
-            else
-            {
-                int vowelIndex = -1;
-                //Handle going through all the consonants
-                for (int i = 0; i <= word.Length; i++)
-                {
-                    if (IsVowel(word[i]) == true)
-                    {
-                        vowelIndex = i;
-                        break;
-                    }
-                }
-
-                string sub = word.Substring(vowelIndex + 1);
-                string postFix = word.Substring(0, vowelIndex -1);
-
-                output = sub + postFix + "ay";
-            }
-
-            return output;
-        }
+            
     }
 }
