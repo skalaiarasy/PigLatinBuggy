@@ -78,7 +78,7 @@ namespace PigLatin
             string output = "placeholder";
             if (IsVowel(firstLetter) == true)
             {
-                output = word + "ay";
+                output = word + "way";
             }
             else
             {
